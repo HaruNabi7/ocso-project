@@ -29,6 +29,7 @@ export class ProductsService {
     }
   ]
   create(createProductDto: CreateProductDto) {
+    if(!createProductDto.producId) createProductDto.producId = uuid()
     createProductDto.producId = uuid();
     this.products.push(createProductDto)
       return createProductDto;
@@ -51,13 +52,18 @@ export class ProductsService {
 
   update(id: string, updateProductDto: UpdateProductDto) {
     let product = this.findOne(id)
-    product = {
+    this.products = this.products.map((product) => {
+     if (product.producId === id) return{
       ...product,
-      ...updateProductDto,
-    }
-    return product
-
+      ...updateProductDto
+     }
+    return product;
+  })
+  return {
+    ...product,
+    ...updateProductDto
   }
+}
 
   remove(id: string ) {
     const {producId} = this.findOne(id)

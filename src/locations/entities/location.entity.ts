@@ -1,4 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToMany, ManyToOne, OneToMany } from "typeorm";
+import { Manager } from "../../managers/entities/manager.entity.js";
+import { Region } from "../../regions/entities/region.entity.js";
+import { Employee } from "../../employees/entities/employee.entity.js";
 
 @Entity()
 export class Location {
@@ -8,6 +11,21 @@ export class Location {
   locationName: string;
   @Column('text')
   locationAddress: string;
-  @Column('array')
+  @Column('simple-array')
   locationLatLng: number[];
+
+  @OneToOne(()=> Manager)
+  @JoinColumn()
+  manager: Manager;
+
+
+  @ManyToOne(()=> Region,(region)=> region.location)
+  @JoinColumn({
+    name: "regionId"
+  })
+  region: Region;
+
+  @OneToMany(() => Employee, (employee) => employee.location)
+  employees: Employee[]
 }
+

@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Employee {
@@ -16,5 +16,8 @@ export class Employee {
     type : 'text',
     nullable: true
   })
-  photoUrl: string;
+  photoUrl: string; 
+
+  @ManyToOne(() => Location)
+  location: Location;
 }

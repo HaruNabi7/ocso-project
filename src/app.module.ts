@@ -5,6 +5,9 @@ import { AppService } from './app.service.js';
 import { EmployeesModule } from './employees/employees.module.js';
 import { ProductsModule } from './products/products.module.js';
 import { ProvidersModule } from './providers/providers.module.js';
+import { ManagersModule } from './managers/managers.module.js';
+import { LocationsModule } from './locations/locations.module.js';
+import { RegionsModule } from './regions/regions.module.js';
 
 @Module({
   imports: [EmployeesModule, ProductsModule, TypeOrmModule.forRoot({
@@ -17,7 +20,7 @@ import { ProvidersModule } from './providers/providers.module.js';
       entities: [],
       autoLoadEntities: true,
       synchronize: true,
-  }), ProvidersModule],
+  }), ProvidersModule, ManagersModule, LocationsModule, RegionsModule],
   controllers: [AppController],
   providers: [AppService],
 })

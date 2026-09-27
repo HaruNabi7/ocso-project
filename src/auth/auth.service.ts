@@ -4,6 +4,7 @@ import { User } from './entities/user.entity.js';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto.js';
 import * as bcrypt from 'bcrypt';
+import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class AuthService {
@@ -17,17 +18,19 @@ export class AuthService {
     return this.userRepository.save(createUserDto);
   }
 
- async loginUser(createUserDto: CreateUserDto) {
+async loginUser(createUserDto: CreateUserDto) {
     const user = await this.userRepository.findOne({
       where: {
         userEmail: createUserDto.userEmail,
       },
     });
 
-    if (!user) throw new UnauthorizedException('No autorizado');
+    if (!user) throw new UnauthorizedException('No estás autorizado');
 
     const match = await bcrypt.compare(createUserDto.userPassword, user.userPassword);
-    if (!match) throw new UnauthorizedException('No autorizado');
-    return user;
+    if (!match) throw new UnauthorizedException('No estás autorizado');
+
+    const token = jwt.sign({ ...user }, 'SECRET_KEY');
+    return token;
   }
 }

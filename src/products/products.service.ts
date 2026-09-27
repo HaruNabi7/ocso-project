@@ -34,7 +34,10 @@ async findOne(id: string) {
   return product;
 }
   findByProvider(id: string){
-    return "ok"
+    return this.ProductRepository.findBy({
+      provider:{
+        providerId: id,
+  }})
     //const productsFound = this.products.filter((product) => product.provider === id)
     //  if (productsFound.length === 0) throw new NotFoundException()
     //    return productsFound;

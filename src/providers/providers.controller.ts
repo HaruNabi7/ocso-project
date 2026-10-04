@@ -20,7 +20,7 @@ export class ProvidersController {
 
   @Get()
   findAll(@UserData() user: User) {
-    if (!user) throw new NotFoundException("No se encontro el usuario");
+    if (user.userRoles.includes('Employee')) throw new NotFoundException("No se encontro el usuario");
     console.log(user);
     return this.providersService.findAll();
   }

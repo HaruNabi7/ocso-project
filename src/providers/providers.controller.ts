@@ -4,6 +4,8 @@ import { CreateProviderDto } from './dto/create-provider.dto.js';
 import { UpdateProviderDto } from './dto/update-provider.dto.js';
 import { get } from 'http';
 import { AuthGuard } from '../auth/guards/auth.guard.js';
+import { User } from '../auth/entities/user.entity.js';
+import { UserData } from '../auth/decorators/user.decorator.js';
 
 @Controller('providers')
 export class ProvidersController {
@@ -17,7 +19,9 @@ export class ProvidersController {
 
 
   @Get()
-  findAll() {
+  findAll(@UserData() user: User) {
+    if (!user) throw new NotFoundException("No se encontro el usuario");
+    console.log(user);
     return this.providersService.findAll();
   }
   

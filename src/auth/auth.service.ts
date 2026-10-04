@@ -4,13 +4,15 @@ import { User } from './entities/user.entity.js';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto.js';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 import * as jwt from 'jsonwebtoken';
+import { LoginUserDto } from './constans/login-user.dto.js';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
+    @InjectRepository(User) private userRepository: Repository<User>,
+    private jwtService: JwtService,
   ) {}
 
   registerUser(createUserDto: CreateUserDto) {
@@ -18,19 +20,27 @@ export class AuthService {
     return this.userRepository.save(createUserDto);
   }
 
-async loginUser(createUserDto: CreateUserDto) {
+  async loginUser(loginUserDto: LoginUserDto) {
     const user = await this.userRepository.findOne({
       where: {
-        userEmail: createUserDto.userEmail,
+        userEmail: loginUserDto.userEmail,
       },
     });
-
-    if (!user) throw new UnauthorizedException('No estás autorizado');
-
-    const match = await bcrypt.compare(createUserDto.userPassword, user.userPassword);
-    if (!match) throw new UnauthorizedException('No estás autorizado');
-
-    const token = jwt.sign({ ...user }, 'SECRET_KEY');
+    if (!user) {
+      throw new UnauthorizedException("No estas autorizado");
+    }
+    const match = await bcrypt.compare(
+      loginUserDto.userPassword,
+      user.userPassword,
+    );
+    if (!match) throw new UnauthorizedException("No estas autorizado");
+    const payload = {
+      user: user.userEmail,
+      password: user.userPassword
+    }
+    const token = this.jwtService.sign(
+      payload
+    );
     return token;
   }
 }

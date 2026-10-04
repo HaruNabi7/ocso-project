@@ -3,6 +3,7 @@ import { ProvidersService } from './providers.service.js';
 import { CreateProviderDto } from './dto/create-provider.dto.js';
 import { UpdateProviderDto } from './dto/update-provider.dto.js';
 import { get } from 'http';
+import { AuthGuard } from '../auth/guards/auth.guard.js';
 
 @Controller('providers')
 export class ProvidersController {
@@ -12,6 +13,8 @@ export class ProvidersController {
   create(@Body() createProviderDto: CreateProviderDto) {
     return this.providersService.create(createProviderDto);
   }
+
+
 
   @Get()
   findAll() {

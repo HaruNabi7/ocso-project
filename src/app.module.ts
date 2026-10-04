@@ -9,9 +9,15 @@ import { ManagersModule } from './managers/managers.module.js';
 import { LocationsModule } from './locations/locations.module.js';
 import { RegionsModule } from './regions/regions.module.js';
 import { AuthModule } from './auth/auth.module.js';
+import { JwtModule } from '@nestjs/jwt';
+import { JWT_KEY, EXPIRES_IN } from './auth/constans/jwt.constanst.js';
 
 @Module({
-  imports: [EmployeesModule, ProductsModule, TypeOrmModule.forRoot({
+  imports: [ JwtModule.register({
+    secret: JWT_KEY,
+    signOptions: { expiresIn: EXPIRES_IN },
+  }),
+    EmployeesModule, ProductsModule, TypeOrmModule.forRoot({  
       type: "postgres",
       host: process.env.host,
       port:+(process.env.port ?? 5432),

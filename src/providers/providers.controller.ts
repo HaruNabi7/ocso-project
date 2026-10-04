@@ -6,6 +6,7 @@ import { get } from 'http';
 import { AuthGuard } from '../auth/guards/auth.guard.js';
 import { User } from '../auth/entities/user.entity.js';
 import { UserData } from '../auth/decorators/user.decorator.js';
+import { Roles } from '../auth/decorators/roles.decorator.js';
 
 @Controller('providers')
 export class ProvidersController {
@@ -16,7 +17,7 @@ export class ProvidersController {
     return this.providersService.create(createProviderDto);
   }
 
-
+  @Roles(['Admin'])
 
   @Get()
   findAll(@UserData() user: User) {

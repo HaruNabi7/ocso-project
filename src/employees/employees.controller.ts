@@ -18,6 +18,13 @@ export class EmployeesController {
     return this.employeesService.create(createEmployeeDto);
   }
 
+  @Auth(ROLES.Manager)
+  @Get('/location/:id')
+  findAllLocation(@Param('id') id: string) {
+    return this.employeesService.findByLocation(+id);
+  }
+
+
   @Auth(ROLES.Employee, ROLES.Manager)
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))

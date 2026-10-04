@@ -1,16 +1,19 @@
-import { IsInt, IsNumber, IsOptional, IsString, MaxLength } from "class-validator";
+import { IsInt, IsNumber, IsObject, IsOptional, IsString, IsUUID, MaxLength } from 'class-validator';
+import { Product } from '../entities/product.entity.js';
+import { Provider } from '../../providers/entities/provider.entity.js';
 
-export class CreateProductDto {
+export class CreateProductDto extends Product {
   @IsString()
-  @MaxLength(100)
-  productName: string;
-
-  @IsNumber()
-  price: number;
-
-  @IsInt()
-  countSeal: number;
-
+  @IsUUID("4")
   @IsOptional()
-  provider: { providerId: string } | any;
+  declare productId: string;
+  @IsString()
+  @MaxLength(40)
+  declare productName: string;
+  @IsNumber()
+  declare price: number;
+  @IsInt()
+  declare countSeal: number;
+  @IsObject()
+  declare provider: Provider;
 }

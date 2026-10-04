@@ -39,7 +39,7 @@ export class ProductsController {
     return this.productsService.update(id, updateProductDto);
   }
 
-  @Auth(ROLES.Employee, ROLES.Manager)
+  @Auth( ROLES.Manager)
   @Delete(':id')
   remove(@Param('id', new ParseUUIDPipe({version: '4'})) id: string) {
     return this.productsService.remove(id, );

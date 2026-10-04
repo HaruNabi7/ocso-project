@@ -7,11 +7,12 @@ import type { Express } from 'express';
 import 'multer';
 import { Auth } from '../auth/decorators/auth.decorators.js';
 import { ROLES } from '../auth/constans/roles.constans.js';
-import { ApiResponse } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Employee } from './entities/employee.entity.js';
 import { ApiAuth } from '../auth/decorators/api.decorator.js';
 
 @ApiAuth()
+@ApiTags("employees")
 @Controller('employees')
 export class EmployeesController {
   constructor(private readonly employeesService: EmployeesService) {}

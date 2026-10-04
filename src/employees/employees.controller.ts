@@ -7,16 +7,26 @@ import type { Express } from 'express';
 import 'multer';
 import { Auth } from '../auth/decorators/auth.decorators.js';
 import { ROLES } from '../auth/constans/roles.constans.js';
+import { ApiResponse } from '@nestjs/swagger';
+import { Employee } from './entities/employee.entity.js';
+import { ApiAuth } from '../auth/decorators/api.decorator.js';
 
+@ApiAuth()
 @Controller('employees')
 export class EmployeesController {
   constructor(private readonly employeesService: EmployeesService) {}
 
-  @Auth( ROLES.Manager)
-  @Post()
-  create(@Body() createEmployeeDto: CreateEmployeeDto) {
-    return this.employeesService.create(createEmployeeDto);
-  }
+  @Auth(ROLES.Manager)
+  @ApiResponse({
+    status: 201,
+    example: {
+      employeeId: "UUID",
+      employeeName: "Josue",
+      employeeEmail: "Josue@gmail.com",
+      employeeLastName: "Reyna",
+      employeePhoneNumber: "4421365462",
+    } as Employee
+  })
 
   @Auth(ROLES.Manager)
   @Get('/location/:id')

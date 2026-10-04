@@ -13,18 +13,14 @@ export class Location {
   locationAddress: string;
   @Column('simple-array')
   locationLatLng: number[];
-
   @OneToOne(()=> Manager, {eager: true})
   @JoinColumn()
   manager: Manager;
-
-
   @ManyToOne(()=> Region,(region)=> region.location)
   @JoinColumn({
     name: "regionId"
   })
   region: Region;
-
   @OneToMany(() => Employee, (employee) => employee.location)
   employees: Employee[]
 }

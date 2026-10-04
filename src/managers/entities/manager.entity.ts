@@ -22,8 +22,7 @@ export class Manager {
   @OneToOne('Location', (location: Location) => location.manager)
   location: Location;
 
-
-  @OneToOne(() => User)
+  @OneToOne(() => User, (user) => user.manager)
   @JoinColumn({ name: 'userId' })
   user: User;
 }

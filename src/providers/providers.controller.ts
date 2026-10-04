@@ -7,8 +7,10 @@ import { AuthGuard } from '../auth/guards/auth.guard.js';
 import { User } from '../auth/entities/user.entity.js';
 import { UserData } from '../auth/decorators/user.decorator.js';
 import { Roles } from '../auth/decorators/roles.decorator.js';
+import { Auth } from '../auth/decorators/auth.decorators.js';
 
-@Controller('providers')
+
+@Controller('providers') 
 export class ProvidersController {
   constructor(private readonly providersService: ProvidersService) {}
 
@@ -17,7 +19,7 @@ export class ProvidersController {
     return this.providersService.create(createProviderDto);
   }
 
-  @Roles(['Admin'])
+  @Auth('Admin')
 
   @Get()
   findAll(@UserData() user: User) {
